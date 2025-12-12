@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>{{ project['title'] }}</h2>
+  <div>Автор: {{ project['owner'] }} | Статус: {{ project['status'] }}</div>
+  <p>{{ project['description'] }}</p>
+
+  {% if session.get('user_id') == project['owner_id'] %}
+    <p><a href="{{ url_for('project_edit', pid=project['id']) }}">Редагувати проєкт</a></p>
+  {% endif %}
+
+  <section>
+    <h3>Коментарі</h3>
+    {% if comments %}
+      <ul>
+        {% for c in comments %}
+          <li><strong>{{ c['author'] }}</strong> ({{ c['created_at'] }})<br>{{ c['content'] }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Коментарів немає.</p>
+    {% endif %}
+
+    {% if session.get('user_id') %}
+      <form method="post" action="{{ url_for('project_comment', pid=project['id']) }}">
+        <label>Додати коментар<br><textarea name="content" rows="3" required></textarea></label><br>
+        <button type="submit">Додати</button>
+      </form>
+    {% else %}
+      <p><a href="{{ url_for('login') }}">Увійдіть</a>, щоб додати коментар.</p>
+    {% endif %}
+  </section>
+
+  <section>
+    <h3>Оцінки</h3>
+    {% if grades %}
+      <ul>
+        {% for g in grades %}
+          <li><strong>{{ g['teacher'] }}</strong> — {{ g['score'] }} ({{ g['created_at'] }})<br>{{ g['comment'] }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Оцінок ще немає.</p>
+    {% endif %}
+
+    {% if session.get('role') == 'teacher' %}
+      <form method="post" action="{{ url_for('project_grade', pid=project['id']) }}">
+        <label>Оцінка (0–100)<br><input name="score" type="number" min="0" max="100" required></label><br>
+        <label>Коментар викладача<br><textarea name="comment" rows="3"></textarea></label><br>
+        <button type="submit">Додати оцінку</button>
+      </form>
+    {% endif %}
+  </section>
+{% endblock %}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Student Projects{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1><a href="{{ url_for('index') }}">StudentProjects</a></h1>
+      <nav>
+        {% if session.get('user_id') %}
+          <span>Привіт, {{ session.get('username') }} ({{ session.get('role') }})</span>
+          <a href="{{ url_for('dashboard') }}">Панель</a>
+          <a href="{{ url_for('logout') }}">Вийти</a>
+        {% else %}
+          <a href="{{ url_for('login') }}">Увійти</a>
+          <a href="{{ url_for('register') }}">Реєстрація</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for m in messages %}
+            <li>{{ m }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>Навчальний приклад — не для продакшн.</small>
+    </div>
+  </footer>
+</body>
+</html>

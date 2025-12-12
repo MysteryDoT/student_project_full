@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Редагування: {{ project['title'] }}</h2>
+  <form method="post">
+    <label>Назва<br><input name="title" value="{{ project['title'] }}" required></label><br>
+    <label>Опис<br><textarea name="description" rows="6">{{ project['description'] }}</textarea></label><br>
+    <label>Статус
+      <select name="status">
+        <option value="planned" {% if project['status']=='planned' %}selected{% endif %}>Заплановано</option>
+        <option value="in_progress" {% if project['status']=='in_progress' %}selected{% endif %}>В процесі</option>
+        <option value="completed" {% if project['status']=='completed' %}selected{% endif %}>Завершено</option>
+      </select>
+    </label><br>
+    <button type="submit">Зберегти</button>
+  </form>
+{% endblock %}

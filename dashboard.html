@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Панель</h2>
+
+  {% if role == 'student' %}
+    <p><a class="btn" href="{{ url_for('project_create') }}">Створити новий проєкт</a></p>
+  {% endif %}
+
+  <h3>Проєкти</h3>
+  {% if projects %}
+    <ul class="project-list">
+      {% for p in projects %}
+        <li class="project-item">
+          <a href="{{ url_for('project_view', pid=p['id']) }}"><strong>{{ p['title'] }}</strong></a>
+          <div>Власник: {{ p['owner'] }} — Статус: {{ p['status'] }}</div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Проєктів ще немає.</p>
+  {% endif %}
+{% endblock %}

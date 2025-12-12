@@ -1,0 +1,3 @@
+Flask==2.2.5
+
+# Werkzeug is a Flask dependency; no extra packages required for this demo.
